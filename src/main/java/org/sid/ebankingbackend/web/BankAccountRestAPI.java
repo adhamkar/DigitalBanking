@@ -39,12 +39,17 @@ public class BankAccountRestAPI {
     }
     @PostMapping("/accounts/debit")
     public DebitDTO debit(@RequestBody DebitDTO debitDTO) throws BankAccountNotFoundException, BalanceNotSufficientException {
-        this.bankAccountService.debit(debitDTO.getAccountId(),debitDTO.getAmount(),debitDTO.getDescription());
+        this.bankAccountService.debit(debitDTO.getAccountId(),
+                debitDTO.getAmount(),
+                debitDTO.getDescription());
         return debitDTO;
     }
     @PostMapping("/accounts/credit")
     public CreditDTO credit(@RequestBody CreditDTO creditDTO) throws BankAccountNotFoundException {
-        this.bankAccountService.credit(creditDTO.getAccountId(),creditDTO.getAmount(),creditDTO.getDescription());
+        this.bankAccountService
+                .credit(creditDTO.getAccountId(),
+                        creditDTO.getAmount(),
+                        creditDTO.getDescription());
         return creditDTO;
     }
     @PostMapping("/accounts/transfer")

@@ -34,7 +34,6 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     @Override
     public CustomerDTO saveCustomer(CustomerDTO customerDTO) {
-        log.info("Saving new Customer");
         Customer customer=dtoMapper.fromCustomerDTO(customerDTO);
         Customer savedCustomer = customerRepository.save(customer);
         return dtoMapper.fromCustomer(savedCustomer);
@@ -76,14 +75,6 @@ public class BankAccountServiceImpl implements BankAccountService {
         List<CustomerDTO> customerDTOS = customers.stream()
                 .map(customer -> dtoMapper.fromCustomer(customer))
                 .collect(Collectors.toList());
-        /*
-        List<CustomerDTO> customerDTOS=new ArrayList<>();
-        for (Customer customer:customers){
-            CustomerDTO customerDTO=dtoMapper.fromCustomer(customer);
-            customerDTOS.add(customerDTO);
-        }
-        *
-         */
         return customerDTOS;
     }
 
@@ -101,11 +92,13 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
 
     @Override
-    public void debit(String accountId, double amount, String description) throws BankAccountNotFoundException, BalanceNotSufficientException {
+    public void debit(String accountId, double amount, String description)
+            throws BankAccountNotFoundException, BalanceNotSufficientException {
         BankAccount bankAccount=bankAccountRepository.findById(accountId)
                 .orElseThrow(()->new BankAccountNotFoundException("BankAccount not found"));
         if(bankAccount.getBalance()<amount)
             throw new BalanceNotSufficientException("Balance not sufficient");
+
         AccountOperation accountOperation=new AccountOperation();
         accountOperation.setType(OperationType.DEBIT);
         accountOperation.setAmount(amount);
@@ -113,7 +106,9 @@ public class BankAccountServiceImpl implements BankAccountService {
         accountOperation.setOperationDate(new Date());
         accountOperation.setBankAccount(bankAccount);
         accountOperationRepository.save(accountOperation);
+
         bankAccount.setBalance(bankAccount.getBalance()-amount);
+
         bankAccountRepository.save(bankAccount);
     }
 
@@ -194,7 +189,9 @@ public class BankAccountServiceImpl implements BankAccountService {
     @Override
     public List<CustomerDTO> searchCustomers(String keyword) {
         List<Customer> customers=customerRepository.searchCustomer(keyword);
-        List<CustomerDTO> customerDTOS = customers.stream().map(cust -> dtoMapper.fromCustomer(cust)).collect(Collectors.toList());
+        List<CustomerDTO> customerDTOS = customers.stream()
+                .map(cust -> dtoMapper.fromCustomer(cust))
+                .collect(Collectors.toList());
         return customerDTOS;
     }
 }
