@@ -11,7 +11,7 @@ import ka.adham.ebankingbackend.entities.SavingAccount;
 import ka.adham.ebankingbackend.enums.AccountStatus;
 import ka.adham.ebankingbackend.enums.OperationType;
 import ka.adham.ebankingbackend.services.BankAccountService;
-import org.sid.ebankingbackend.entities.*;
+import ka.adham.ebankingbackend.entities.*;
 import ka.adham.ebankingbackend.exceptions.CustomerNotFoundException;
 import ka.adham.ebankingbackend.repositories.AccountOperationRepository;
 import ka.adham.ebankingbackend.repositories.BankAccountRepository;
